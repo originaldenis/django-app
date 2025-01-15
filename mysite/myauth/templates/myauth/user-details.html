@@ -1,0 +1,32 @@
+{% extends 'myauth/base.html' %}
+
+{% block title %}
+  User information
+{% endblock %}
+
+{% block body %}
+  <h1>User info</h1>
+    <p>Username: {{ user.username }}</p>
+    <p>First name: {{ user.first_name }}</p>
+    <p>Last name: {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Bio: {{ user.profile.bio }}</p>
+    <h3>Avatar</h3>
+      <div>
+        {% if user.profile.avatar %}
+          <img src="{{ user.avatar.url }}" alt="{{ user.avatar.name }}">
+        {% else %}
+          <div>No avatar yet</div>
+      </div>
+        {% endif %}
+      </div>
+      <div>
+        {% if request.user.is_staff or user.id == request.user.id %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update avatar</button>
+          </form>
+        {% endif %}
+      </div>
+{% endblock %}
